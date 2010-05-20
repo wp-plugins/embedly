@@ -3,7 +3,7 @@ Contributors: Embedly
 Tags: embed, oembed, video, image, rich media
 Requires at least: 2.9.1
 Tested up to: 2.9.2
-Stable tag: 0.9
+Stable tag: 1.0
 
 Embed videos, images and rich media from 73 sources with just the url.
 
