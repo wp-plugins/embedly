@@ -63,7 +63,4 @@ Yes
 = 1.1 =
 A few fixes.
 
-= 1.0 =
-Bad Layout, don't use.
-
 == Upgrade Notice ==
