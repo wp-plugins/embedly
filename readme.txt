@@ -60,7 +60,8 @@ Yes
 1. Admin Console
 
 == Changelog ==
-
+= 1.0 =
+A few fixes.
 = 0.9 =
 Initial Version
 
