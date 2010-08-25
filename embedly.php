@@ -4,8 +4,9 @@ Plugin Name: Embedly
 Plugin URI: http://api.embed.ly
 Description: The Embedly Plugin extends Wordpress's Embeds allowing bloggers to Embed from 73 services and counting.
 Author: Embed.ly Inc
-Version: 1.0
+Version: 1.4
 Author URI: http://embed.ly
+License: GPL2
 
 Copyright 2010  Embedly  (email : developer@embed.ly)
 
@@ -23,6 +24,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+
+if (!defined('PLUGINDIR')) {
+	define('PLUGINDIR','wp-content/plugins');
+}
+
+if (is_file(trailingslashit(ABSPATH.PLUGINDIR).'embedly.php')) {
+	define('EMBEDLY_FILE', trailingslashit(ABSPATH.PLUGINDIR).'embedly.php');
+}
+else if (is_file(trailingslashit(ABSPATH.PLUGINDIR).'embedly/embedly.php')) {
+	define('EMBEDLY_FILE', trailingslashit(ABSPATH.PLUGINDIR).'embedly/embedly.php');
+}
 
 /* DB CRUD Methods
  */
@@ -93,11 +105,11 @@ function get_embedly_selected_services(){
 /**
  * Activation Hooks
  */
-function embedly_activate(){
+function embedly_Activate(){
   global $wpdb;
-  add_option('embedly_active', true);
-  $table_name = $wpdb->prefix . "embedly_providers";
-  //Table doesn't exist
+	$table_name = $wpdb->prefix . "embedly_providers";
+	add_option('embedly_active', true);	
+ //Table doesn't exist
   if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
     $sql = "CREATE TABLE " . $table_name . " (
             id MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
@@ -111,12 +123,12 @@ function embedly_activate(){
             about TEXT NULL,
             UNIQUE KEY id (id)
      );";
-    echo $sql;
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql);
   } else {
     //Clean Slate
-    $results = $wpdb->query("TRUNCATE TABLE '$table_name';");
+		$sql = "TRUNCATE TABLE ".$table_name.";";
+		$results = $wpdb->query($sql);
   }
   $result = wp_remote_retrieve_body( wp_remote_get('http://api.embed.ly/v1/api/wordpress'));
   $services = json_decode($result);
@@ -124,15 +136,16 @@ function embedly_activate(){
   	insert_provider($service);
   }
 }
-register_activation_hook( __FILE__, 'embedly_activate' );
+register_activation_hook( EMBEDLY_FILE, 'embedly_Activate' );
 
 function embedly_deactivate(){
-  delete_option('embedly_active');
   global $wpdb;
   $table_name = $wpdb->prefix . "embedly_providers";
-  $results = $wpdb->query("TRUNCATE TABLE '$table_name';");
+	$sql = $wpdb->prepare("TRUNCATE TABLE ".$table_name.";");
+  $results = $wpdb->query($sql);
+	delete_option('embedly_active');
 }
-register_deactivation_hook( __FILE__, 'embedly_deactivate' );
+register_deactivation_hook( EMBEDLY_FILE, 'embedly_deactivate' );
 
 
 /**
@@ -153,7 +166,7 @@ function admin_register_head() {
   $siteurl = get_option('siteurl');
   $url = $siteurl . '/wp-content/plugins/' . basename(dirname(__FILE__));
   echo "<link rel='stylesheet' type='text/css' href='$url/css/embedly.css' />\n";
-  echo "<script src='$url/js/embedly.js' type='text/javascript' />";
+  echo "<script src='$url/js/embedly.js' type='text/javascript' ></script>";
 }
 add_action('admin_head', 'admin_register_head');
 
@@ -221,13 +234,16 @@ function update_embedly_service($selected){
  */
 function add_embedly_providers($the_content){
   $services = get_embedly_selected_services();
+	require_once( ABSPATH . WPINC . '/class-oembed.php' );
+	$oembed = _wp_oembed_get_object();
+	$oembed->providers = array(); 
   if ($services && get_option('embedly_active')) {
     foreach($services as $service) {
       foreach(json_decode($service->regex) as $sre) {
         wp_oembed_add_provider($sre, 'http://api.embed.ly/v1/api/oembed', true );
       }
     }
-  }
+  }	
 }
 //add all the providers on init.
 add_action('init', 'add_embedly_providers');
