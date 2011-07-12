@@ -1,20 +1,26 @@
 === Embedly ===
 Contributors: Embedly
 Tags: embed, oembed, video, image, rich media
-Requires at least: 2.9.1
-Tested up to: 3.0.1
-Stable tag: 1.4
+Requires at least: 3.1
+Tested up to: 3.2
+Stable tag: 2.0
 
-Embed videos, images and rich media from 73 sources with just the url.
+Embed videos, images and rich media from "any" source with just the URL.
+Just add your [Embedly Key](http://embed.ly/pricing) to the Embedly
+plugin settings.
 
 == Description ==
 
 The [Embedly](http://embed.ly) plugin allows bloggers to embed videos, images and rich media from
-73 sources with just the url. It uses the [Embedly API](http://api.embed.ly) to
-get the embed code and display it in a post. This Plugin extends the 
-[Embeds](http://codex.wordpress.org/Embeds) framework in Wordpress 2.9. 
+"any" source with just the URL. It uses the [Embedly API](http://embed.ly/docs) to
+get the embed code and display it in a post.
 
-Write your post as normal, putting the url to the content you want to embed on
+Write your post as normal and click the Embedly Icon in your Rich Editor
+to add "any" URL to your post.
+
+OR
+
+Embed 200+ sources by putting the URL to the content you want to embed on
 a single line like so:
 
     This Embedly lets me embed everything great on the web!
@@ -29,8 +35,6 @@ a single line like so:
 
     http://azizisbored.tumblr.com/post/558456193/mtv-movie-awards-promo-who-is-aziz-ansari
 
-
-Publish and that's it. Wordpress and Embedly take care of the rest. 
 
 == Installation ==
 
@@ -54,15 +58,41 @@ Manually
 
 Yes
 
+= Where do I get a key? =
+
+You can sign up for a free or paid plan by clicking [here](http://embed.ly/pricing).
+
+= How do I embed "any" URL? =
+
+In the post editor click the Embedly icon and add your URL.
+
+= Do I need a key? =
+
+You need a key to embed "any" url, otherwise the plugin will
+only be available for these [providers](http://embed.ly/providers).
+
+= What does a paid plan give me? =
+
+The paid [plans](http://embed.ly/pricing) will give you the 
+ability to choose the images used in your embed, remove the
+powered by Embedly logo, and allow higher levels of usage
+and support.
+
 
 == Screenshots ==
 
-1. Admin Console
+1. Admin Console.
+2. Sample Embed.
 
 == Changelog ==
+= 2.0 =
+* Adds Embedly TinyMCE plugin to Rich Editor.
+* Support for Embedly Key to Embed "any" URL.
 = 1.0 =
 A few fixes.
 = 0.9 =
 Initial Version
 
 == Upgrade Notice ==
+= 2.0 =
+Embed "any" URL.
