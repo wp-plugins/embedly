@@ -6,7 +6,8 @@ Tested up to: 3.2
 Stable tag: 2.0
 
 Embed videos, images and rich media from "any" source with just the URL.
-Just add your Embedly Key to the Embedly plugin settings.
+Just add your [Embedly Key](http://embed.ly/pricing) to the Embedly
+plugin settings.
 
 == Description ==
 
