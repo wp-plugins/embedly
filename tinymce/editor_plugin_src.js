@@ -31,7 +31,7 @@ function embedly(){
       ed.onPreInit.add(function(){
         // in case embeds have videos or audio tags
         // convert our embed to an Image tag for manipulation
-        self.schema.addValidElements('img[src|class|*],div[id|class|*],iframe[src|*],object[id|style|width|height|classid|codebase|*],param[name|value],embed[id|style|width|height|type|src|*],video[*],audio[*],source[*]');
+        self.schema.addValidElements('div[id|class|*]');
         ed.parser = ed.parser || new tinymce.html.DomParser(s, self.schema);
         ed.parser.addNodeFilter('div', function(nodes, name){
           var i = nodes.length;
@@ -175,8 +175,8 @@ function embedly(){
           style = '';
       }
       style += 'max-width:'+ node.attr('width') + 'px;';
-      if(node.attr('height') != 600)
-        style += 'max-height:'+ node.attr('height') + 'px;';
+      if(data.height && data.height != '')
+        style += 'overflow:hidden;max-height:'+ node.attr('height') + 'px;';
       
       
       if(data.embed){
