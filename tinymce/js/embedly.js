@@ -18,8 +18,7 @@ var EmbedlyDialog = {
   embedlyPowered: '<span class="embedly-powered" style="float:right;display:block"><a target="_blank" href="http://embed.ly?src=anywhere" title="Powered by Embedly"><img src="//static.embed.ly/images/logos/embedly-powered-small-light.png" alt="Embedly Powered" /></a></span>',
   templateCap: '<div class="media-attribution"><span>via </span>{{#favicon}}         \
   <img class="embedly-favicon" width="16px" height="16px" src="{{favicon_url}}">{{/favicon}}   \
-  <a href="{{provider_url}}" class="media-attribution-link"            \
-  data-media-type="Plixi" target="_blank">{{provider_name}}</a>        \
+  <a href="{{provider_url}}" class="media-attribution-link" target="_blank">{{provider_name}}</a>        \
   {{#author}}<span>by <a target="_blank" href="{{author_url}}">        \
   {{author_name}}</a></span>{{/author}}</div><div style="clear:both;"></div><div class="embedly-clear"></div></div>',
   
@@ -60,29 +59,39 @@ var EmbedlyDialog = {
       return false;
     }
     EmbedlyDialog.data.url = url;
-    
+    params = {};
     // options
     width = $j('#embedly_width_field').val();
-    if(typeof width != 'undefined' && width != '')
+    if(typeof width != 'undefined' && width != ''){
       EmbedlyDialog.data.width = width;
-    else
-      width = 500;
+      params['maxwidth'] = width;
+    }else {
+      width = null;
+      EmbedlyDialog.data.width = null;
+    }
     words = $j('#embedly_words_field').val();
-    if(typeof words != 'undefined' && words != '')
+    if(typeof words != 'undefined' && words != ''){
       EmbedlyDialog.data.words = words;
-    else
+      params['words'] = words;
+    }else {
       words = null;
-      
+      EmbedlyDialog.data.words = null;
+    } 
     height = $j('#embedly_height_field').val();
-    if(typeof height != "undefined" && height != '')
+    if(typeof height != "undefined" && height != ''){
       EmbedlyDialog.data.height = height;
-    else
+      params['maxheight'] = height;
+    } else {
       height = null;
+      EmbedlyDialog.data.height = null;
+    }
+    
+    params['url'] = escape(url);
+    params['key'] = EmbedlyDialog.key;
     
     $j('#embedly_ajax_load').show();
     EmbedlyDialog.embedlyUrl = EmbedlyDialog.endpoint == 'preview' ? 'http://api.embed.ly/1/preview' : 'http://api.embed.ly/1/oembed'
-    EmbedlyDialog.ajax('get', EmbedlyDialog.embedlyUrl, 
-      {key:EmbedlyDialog.key, url:escape(url), words:words, width:width, height: height });
+    EmbedlyDialog.ajax('get', EmbedlyDialog.embedlyUrl, params);
   },
   
   ajax : function(method, url, params) {
@@ -107,36 +116,46 @@ var EmbedlyDialog = {
     var pr, code, title, style, data;
     EmbedlyDialog.embed = resp;
     data = EmbedlyDialog.data;
-    if(EmbedlyDialog.endpoint == 'preview'){
-      
-      pr = '<div id="embedly-preview">';
-      if(resp.images.length > 0){
-        pr += '<div class="embedly-images"><div class="embedly-image-scroll">';
-        for(image in resp.images)
-          pr += '<div class="image"><img src="'+resp.images[image].url+'"/></div>';
-        pr += '<p>Select an image to use with your embed.</p><a href="#" class="button secondary images-prev">&lt;</a><a href="#" class="button secondary images-next">&gt;</a>';
-        pr += '</div>';
-        pr += '</div>'; // /embedly-images div
-      }
-      pr += '<div class="embedly-content">';
-      if(resp.title)
-        pr += '<p><strong>Title:</strong> '+resp.title+'</p>';
-      if(resp.description)
-        pr += '<p><strong>Description:</strong> '+resp.description+'</p>';
-      pr += '</div>'; // /embedly-content
-      pr += '</div>'; // /embedly-preview
-      
+    if(resp.type == 'error'){
+      $j('#embedly_ajax_load').hide();
+      $j('#embedly_url_field').siblings('label').before("<p class='error'>We couldn't process this URL. Try again, or email support@embed.ly.</p>");
     } else {
-      pr = EmbedlyDialog.generateOembed(resp);
-    }
+      if(EmbedlyDialog.endpoint == 'preview'){
+      
+        pr = '<div id="embedly-preview">';
+        if(resp.images.length > 0){
+          pr += '<div class="embedly-images"><div class="embedly-image-scroll">';
+          for(image in resp.images)
+            pr += '<div class="image"><img src="'+resp.images[image].url+'"/></div>';
+          pr += '<p>Select an image to use with your embed.</p><a href="#" class="button secondary images-prev">&lt;</a><a href="#" class="button secondary images-next">&gt;</a>';
+          pr += '</div>';
+          pr += '</div>'; // /embedly-images div
+        } else if((resp.object.type == 'video' || resp.type == 'video')){
+          pr += '<div class="embedly-images"><div class="image embedly-video">&nbsp;</div></div>';
+        } else {
+          pr += '<div class="embedly-images"><div class="image embedly-noimage">&nbsp;</div></div>';
+        }
+      
+        pr += '<div class="embedly-content">';
+        if(resp.title)
+          pr += '<p><strong>Title:</strong> '+resp.title+'</p>';
+        if(resp.description)
+          pr += '<p><strong>Description:</strong> '+resp.description+'</p>';
+        pr += '</div>'; // /embedly-content
+        pr += '</div>'; // /embedly-preview
+      
+      } else {
+        pr = EmbedlyDialog.generateOembed(resp);
+      }
     
-    $j('#embedly_ajax_load').hide();
-    $j('#embedly_form_lookup').hide();
-    $j('#embedly_form_submit').show().focus();
-    $j('#embedly-preview-results').html(pr);
-    $j('.embedly-images .images-prev').bind('click', EmbedlyDialog.imagePrev);
-    $j('.embedly-images .images-next').bind('click', EmbedlyDialog.imageNext);
-    $j('.embedly-images').find('.image').eq(0).addClass('selected');
+      $j('#embedly_ajax_load').hide();
+      $j('#embedly_form_lookup').hide();
+      $j('#embedly_form_submit').show().focus();
+      $j('#embedly-preview-results').html(pr);
+      $j('.embedly-images .images-prev').bind('click', EmbedlyDialog.imagePrev);
+      $j('.embedly-images .images-next').bind('click', EmbedlyDialog.imageNext);
+      $j('.embedly-images').find('.image').eq(0).addClass('selected');
+    }
   },
   imageNext: function(e){
     e.preventDefault();
