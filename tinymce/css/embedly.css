@@ -25,7 +25,7 @@ input:focus {
 }
 input#embedly_url_field {
   padding-right:30px;
-  width:444px;
+  width:93%;
 }
 label {
   margin:0;
@@ -46,9 +46,14 @@ fieldset input {
   width:444px;
 }
 fieldset p.third {
-  width:152px;
+  width:26%;
   margin-left:10px;
   float:left;
+}
+fieldset p.third-mini {
+  width:15%;
+  float:left;
+  margin:12px 0 0 10px;
 }
 fieldset p.half {
   float:left;
@@ -59,7 +64,7 @@ fieldset p.first {
   margin-left:0;
 }
 fieldset p.third input {
-  width:146px;
+  width:95%;
 }
 fieldset p.half input {
   width:140px;
@@ -78,14 +83,12 @@ fieldset p.half input {
 .embedly_button_row button {
   margin-right:5px;
 }
-#embedly_form_submit {
-  display:none;
-}
+
 #embedly-preview-results {
   background:#fff;
   border:1px solid #dadada;
   height:240px;
-  overflow:auto;
+  overflow-y:scroll;
   padding:10px;
 }
 
@@ -164,7 +167,10 @@ a.button.primary:active {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0078c9), color-stop(14%, #0097d8), color-stop(89%, #4fb6ea));
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0097D8', endColorstr='#4FB6EA',GradientType=0 );
 }
-
+p.error {
+  color:red; padding:0; margin:0;
+  float:right;
+}
 /* Embedly Preview */
 #embedly-preview {
 }
@@ -208,6 +214,16 @@ a.button.primary:active {
   -o-box-shadow:0px 0px 3px #333;
   box-shadow:0px 0px 3px #333;
   -ms-box-shadow:0px 0px 3px #333;
+}
+#embedly-preview .embedly-images .embedly-video,
+#embedly-preview .embedly-images .embedly-noimage {
+  background:#000 url(../img/play.png) no-repeat bottom left;
+  height:100px;
+  width:100%;
+  display:block;
+}
+#embedly-preview .embedly-images .embedly-noimage {
+  background:transparent url(../img/noimage.png) no-repeat top left;
 }
 
 div.embedly {
@@ -280,4 +296,11 @@ img.mceItemEmbedly {
   background-repeat:no-repeat;
   background-position:center center;
   background-image:url(tinymce/img/embed.gif);
+}
+img.mceItemEmbedly:after {
+  clear:both;
+  height:0px;
+  content:".";
+  visibility:hidden;
+  display:block;
 }
