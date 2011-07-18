@@ -3,11 +3,10 @@ Contributors: Embedly
 Tags: embed, oembed, video, image, rich media
 Requires at least: 3.1
 Tested up to: 3.2.1
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 
 Embed videos, images and rich media from "any" source with just the URL.
-Just add your [Embedly Key](http://embed.ly/pricing) to the Embedly
-plugin settings.
+Just add your Embedly Key to the Embedly plugin settings.
 
 == Description ==
 
@@ -85,6 +84,10 @@ and support.
 2. Sample Embed.
 
 == Changelog ==
+= 2.0.4 =
+* Updated flow for previewing and updating embeds.
+* Improved previews for preview endpoint.
+* Better error handling for loading plugin in Post Editor.
 = 2.0.3 =
 * Resolve issue with tag attributes getting stripped
 * Resolve quirks with height getting set incorrectly
