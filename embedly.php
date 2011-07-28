@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Embedly
-Plugin URI: http://api.embed.ly
-Description: The Embedly Plugin extends Wordpress's Embeds allowing bloggers to Embed from 73 services and counting.
+Plugin URI: http://embed.ly
+Description: The Embedly Plugin extends Wordpress's Embeds allowing bloggers to Embed from 218 services and counting.
 Author: Embed.ly Inc
-Version: 2.0
+Version: 2.0.5
 Author URI: http://embed.ly
 License: GPL2
 
@@ -339,7 +339,7 @@ function register_embedly_button($buttons){
 }
 
 function add_embedly_tinymce_plugin($plugin_array){
-  $url = get_bloginfo('url');
+  $url = get_option('siteurl');
   $url.= "/wp-content/plugins/embedly/tinymce/editor_plugin.js";
   $plugin_array['embedly'] = $url;
   return $plugin_array;
@@ -349,9 +349,8 @@ add_action('admin_head', 'embedly_footer_widgets');
 add_action('init', 'embedly_addbuttons');
 
 function embedly_change_mce_options($init){
-  $ext = 'div[id|class|data-mce-style|style|data-ajax]';
-  $ext.= ',p[id|class|style],a[id|class|style],span[id|class|style]';
-  $ext.= ',img[id|class|style|data-mce-style|data-ajax|width|height]';
+  //$ext = 'div[id|class|data-mce-style|style|data-ajax]';
+  //$ext.= ',p[id|class|style],a[id|class|style],span[id|class|style]';
   
   if ( isset ($init['extended_valid_elements'] ) ) {
     $init['extended_valid_elements'] .= ',' . $ext;
