@@ -290,7 +290,13 @@ function embedly_ajax_update_providers(){
 add_action( 'wp_ajax_embedly_update_providers', 'embedly_ajax_update_providers' );
 
 function embedly_acct_has_feature($feature){
-  $result = wp_remote_retrieve_body(wp_remote_get('http://api.embed.ly/1/feature?feature='.$feature.'&key='.get_option('embedly_key')));
+  $embedly_key = get_option('embedly_key');
+  if ($embedly_key) {
+    $result = wp_remote_retrieve_body(wp_remote_get('http://api.embed.ly/1/feature?feature='.$feature.'&key='.$embedly_key));
+  } else {
+    return false;
+  }
+
   $feature_status = json_decode($result);
   if ($feature_status)
     return $feature_status->$feature;
