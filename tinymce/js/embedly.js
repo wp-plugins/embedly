@@ -8,7 +8,7 @@ var embedlyAjaxCallback = function(resp){
 }
 
 var EmbedlyDialog = {
-  embedlyUrl : 'http://api.embed.ly/1/preview',
+  embedlyUrl : '//api.embed.ly/1/preview',
   key : '',
   endpoint: '',
   imageIndex : 0,
@@ -87,11 +87,11 @@ var EmbedlyDialog = {
       EmbedlyDialog.data.height = null;
     }
     
-    params['url'] = escape(url);
+    params['url'] = encodeURIComponent(url);
     params['key'] = EmbedlyDialog.key;
     params['allowscripts'] = 'true'; //allows us to get script tags.
     $j('#embedly_ajax_load').show();
-    EmbedlyDialog.embedlyUrl = EmbedlyDialog.endpoint == 'preview' ? 'http://api.embed.ly/1/preview' : 'http://api.embed.ly/1/oembed'
+    EmbedlyDialog.embedlyUrl = EmbedlyDialog.endpoint == 'preview' ? '//api.embed.ly/1/preview' : '//api.embed.ly/1/oembed'
     EmbedlyDialog.ajax('get', EmbedlyDialog.embedlyUrl, params);
   },
   
