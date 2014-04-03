@@ -4,7 +4,7 @@ Plugin Name: Embedly
 Plugin URI: http://embed.ly
 Description: The Embedly Plugin extends Wordpress's Oembed feature, allowing bloggers to Embed from 230+ services and counting.
 Author: Embed.ly Inc
-Version: 2.3.0
+Version: 3.0
 Author URI: http://embed.ly
 License: GPL2
 
@@ -258,6 +258,17 @@ add_action('wp_head', 'embedly_enqueue_public');
 
 
 /**
+ * Enqueue platform.js to post for cards.
+**/
+function embedly_platform_javascript()
+{
+  $protocol = is_ssl() ? 'https' : 'http';
+  wp_enqueue_script('embedly-platform', $protocol.'://cdn.embedly.com/widgets/platform.js');
+}
+add_action('wp_head','embedly_platform_javascript', 0);
+
+
+/**
  * The list of providers embedly offers is always growing. 
  * This is a dynamic way to pull in new providers.
 **/
@@ -433,6 +444,7 @@ function embedly_footer_widgets() {
   echo '</script>';
 }
 
+
 function embedly_addbuttons() {
   if(!current_user_can('edit_posts') && !current_user_can('edit_pages')) {
     return;
@@ -443,10 +455,12 @@ function embedly_addbuttons() {
   }
 }
 
+
 function register_embedly_button($buttons) {
   array_push($buttons, "|", "embedly");
   return $buttons;
 }
+
 
 function add_embedly_tinymce_plugin($plugin_array) {
   $url = plugin_dir_url(__FILE__).'tinymce/editor_plugin.js';
@@ -468,7 +482,6 @@ function embedly_settings_page() {
   $cnt      = 0;
   
   #Begin processing form data
-
   #empty key set when saving
   if(isset($_POST['embedly_key']) && (empty($_POST['embedly_key']) || $_POST['embedly_key'] == __('Please enter your key...', 'embedly'))) {
     $embedly_options['key'] = '';
