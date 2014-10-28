@@ -2,12 +2,12 @@
 
 Contributors: Embedly
 
-Tags: embed, oembed, video, image, pdf
+Tags: embed, oembed, video, image, pdf, card
 
 Requires at least: 3.5.1
 
-Tested up to: 3.8.1
-Stable tag: 3.0
+Tested up to: 3.9
+Stable tag: 3.1.2
 
 
 Embed videos, images, PDF, and article previews from "any" source with just the URL.
@@ -19,8 +19,7 @@ Just add your Embedly Key to the Embedly plugin settings.
 
 
 The [Embedly](http://embed.ly) plugin allows bloggers to embed videos, images, PDF, and article previews from
-"any" source with just the URL. It uses the [Embedly API](http://embed.ly/docs) to
-get the embed code and display it in a post.
+"any" source with just the URL. It uses the [Embedly Cards](http://embed.ly/cards) to generate a clean, responsive, and shareable card for content types video, products, articles and more.
 
 Write your post as normal and click the Embedly Icon in your Rich Editor
 to add "any" URL to your post.
@@ -118,9 +117,9 @@ only be available for these [providers](http://embed.ly/providers).
 What does a paid product give me? 
 =
 
-If you upgrade to the Embed paid product (http://embed.ly/embed) it will 
-remove the powered by Embedly logo, and allow higher levels of usage
-and support.
+We will be providing analytics on how your embeds are doing
+including plays, duration watched, hovers, and other engagement
+metrics. This is currently not available in the plugin.
 
 = 
 What is your support email? 
@@ -141,11 +140,22 @@ Note: You will need to activate Embedly for each site.
 
 1. Admin Console.
 
-2. Sample Embed.
+2. Embedly Post Editor.
+
+3. Sample Post.
 
 
 
 == Changelog ==
+
+= 3.1.2 =
+
+* Enable Twitter WP OEmbed.
+
+= 3.1 =
+
+* Fixes issue with Embedly not loading on WP3.9.
+* Load tiny_mce_popup_4_0.js when TinyMCE is v4.0.
 
 = 3.0 =
 
@@ -260,3 +270,7 @@ Update tinymce and jquery libs.
 = 3.0 =
 
 Embedly rich post editor option now uses Embedly Cards layout.
+
+= 3.1 =
+
+Dynamically loading Embedly popup based on TinyMCE Version.
